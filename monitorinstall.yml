@@ -1,0 +1,22 @@
+---
+
+- name: Replace old agent with new
+  hosts: prometheus
+  gather_facts: false
+  tasks:
+    - name : Uninstall older agent
+      apt :
+        pkg : do-agent
+        state : absent
+        purge : yes
+      become : yes
+      become_user : root
+    
+    - name : Install new agent
+      shell : curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash
+      args :
+        executable : /bin/bash
+      become : yes
+      become_user : root
+
+

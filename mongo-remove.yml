@@ -1,0 +1,43 @@
+---
+
+- name: Install Mongo
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name : stop mongod service
+      service :
+        name: mongod
+        state: stopped
+      become : yes
+      become_user : root
+    
+    - name : remove mongod 
+      apt:
+         name: mongodb-org*
+         state : absent
+         purge : yes
+      become : yes
+      become_user : root
+
+    - name: remove directories
+      file:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - /var/log/mongodb
+        - /var/lib/mongodb
+        - /etc/apt/sources.list.d/mongodb-org-4.2.list
+      become : yes
+      become_user : root
+
+    - name : update and upgrade all the packages
+      apt : 
+        update_cache : yes
+      become : yes
+      become_user : root
+
+      
+
+
+
+   

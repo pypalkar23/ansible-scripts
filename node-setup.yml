@@ -1,0 +1,48 @@
+---
+
+- name: Setup NODE JS environment
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name : Download NODE JS script
+      shell : curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh
+      become : yes
+      become_user : root
+
+    - name : Execute NODE JS script
+      shell : bash nodesource_setup.sh
+      become : yes
+      become_user : root
+    
+    - name : Install NODE JS
+      apt: 
+        pkg: nodejs
+        update_cache : yes
+      become : yes
+      become_user : root
+
+    - name : update and upgrade all the packages
+      apt : 
+        update_cache : yes
+      become : yes
+      become_user : root
+      
+    - name : Install build essentials
+      apt: 
+        pkg: build-essential
+        update_cache : yes
+      become : yes
+      become_user : root
+
+    - name: Install pm2
+      shell : npm install pm2@latest -g
+      become : yes
+      become_user : root
+
+
+        
+
+    
+
+
+

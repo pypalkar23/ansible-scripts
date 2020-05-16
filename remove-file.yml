@@ -1,0 +1,20 @@
+---
+
+- name: Install Mongo
+  hosts: failed
+  gather_facts: false
+  tasks:
+    - name: remove directories
+      file:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/apt/sources.list.d/mongodb-org-4.2.list
+      become : yes
+      become_user : root
+
+    - name : update and upgrade all the packages
+      apt : 
+        update_cache : yes
+      become : yes
+      become_user : root

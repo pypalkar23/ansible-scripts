@@ -1,0 +1,45 @@
+---
+
+- name: Install Mongo
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name : update and upgrade all the packages
+      apt : 
+        upgrade : yes 
+        update_cache : yes
+      become : yes
+      become_user : root
+    
+    - name : add key to the servers
+      shell : wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+      args :
+        executable : /bin/bash
+      become : yes
+      become_user : root
+
+    - name : add repository
+      shell : echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+      args :
+        executable : /bin/bash
+      become : yes
+      become_user : root
+    
+    - name : update and upgrade all the packages
+      apt : 
+        update_cache : yes
+      become : yes
+      become_user : root
+    
+    - name : Install mongodb
+      apt : 
+        pkg: mongodb-org
+        update_cache : yes
+      become : yes
+      become_user : root
+
+    
+
+  
+
+
